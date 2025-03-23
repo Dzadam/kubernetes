@@ -1,0 +1,24 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: example-configmap
+data:
+  username: Adam
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    name: pod-example
+  name: just-an-example
+spec:
+  containers:
+    - name: busybox
+      image: busybox
+      command: [ "/bin/sh", "-c", "echo username: $USERNAME" ]
+      env:
+        - name: USERNAME
+          valueFrom:
+            configMapKeyRef:
+              name: example-configmap
+              key: username
