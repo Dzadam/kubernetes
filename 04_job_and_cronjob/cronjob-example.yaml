@@ -1,0 +1,23 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: cronjob-example
+spec:
+  schedule: "0 6 * * *" 
+  concurrencyPolicy: "Replace"
+  suspend: false
+  successfulJobsHistoryLimit: 5
+  failedJobsHistoryLimit: 3
+  jobTemplate:             
+    spec:
+      template:
+        metadata:
+          labels:          
+            env: "prod"
+        spec:
+          containers:
+          - name: daily-backup
+            image: busybox
+            command: ["/bin/sh"]
+            args: ["-c", "echo Repetitive job: $(date +%F_%H:%M:%S)"]
+          restartPolicy: OnFailure 

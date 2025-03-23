@@ -1,0 +1,19 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: job-example
+  labels:
+    env: prod
+spec:
+  parallelism: 1
+  completions: 1
+  activeDeadlineSeconds: 1200
+  template:
+    spec:
+      containers:
+      - name: prod-kpi-report
+        image: busybox
+        command: ["/bin/sh"]
+        args: ["-c", "echo One time job: $(date +%F_%H:%M:%S)"]
+      restartPolicy: Never
+  backoffLimit: 2
